@@ -20,7 +20,7 @@ export default class User extends BaseModel {
   public avatar: string
 
   @hasMany(() => LinkToken, { foreignKey: 'userId' })
-  public linkToken: HasMany<typeof LinkToken>
+  public tokens: HasMany<typeof LinkToken>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

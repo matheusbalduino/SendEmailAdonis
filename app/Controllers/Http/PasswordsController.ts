@@ -14,7 +14,7 @@ export default class PasswordsController {
 
     const user = await User.findByOrFail('email', email)
 
-    await user.related('linkToken').updateOrCreate(
+    await user.related('tokens').updateOrCreate(
       { userId: user.id },
       {
         token
@@ -30,5 +30,23 @@ export default class PasswordsController {
     })
 
     return response.json({ message: `email enviado para ${email}` })
+  }
+
+  public async resetPassword({ request, response }: HttpContextContract) {
+    const { token, password } = request.all()
+
+    const userByToken = await User.query()
+      .whereHas('tokens', (query) => {
+        query.where('token', token)
+      })
+      .firstOrFail()
+
+    console.log(userByToken)
+
+    userByToken.password = password
+
+    await userByToken.save()
+
+    return response.noContent()
   }
 }
