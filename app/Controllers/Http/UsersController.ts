@@ -4,7 +4,10 @@ import User from 'App/Models/User'
 import { CreateUserValidator, UpdateUserValidator } from 'App/Validators/UserValidator'
 
 export default class UsersController {
-  public async index({}: HttpContextContract) {}
+  public async index({}: HttpContextContract) {
+    const users = User.all()
+    return users
+  }
 
   public async store({ request, response }: HttpContextContract) {
     const user = await request.validate(CreateUserValidator)
